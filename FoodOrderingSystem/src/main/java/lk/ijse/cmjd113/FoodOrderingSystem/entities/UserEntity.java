@@ -1,5 +1,8 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.entities;
 
+// Entity folder eka athule thiyenne database eke hadena tables walata adala java classes witharai.
+// User kiyanne databse table ekak misak sicurity code ekak nemei.
+
 import java.time.LocalDateTime;
 
 import javax.management.relation.Role;
@@ -23,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor      // default constructor eka hadala denawa.
 @AllArgsConstructor     // Okoma fields thiyana constructor ekak hadala denawa.
 
-public class User {
+public class UserEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // id eka auto increment karanna.
@@ -44,7 +47,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)        // Hadagaththa e num eka pawichchi karanawa
+    @Enumerated(EnumType.STRING)        // Hadagaththa enum eka pawichchi karanawa
+    // meka damme nah nam data bse eke save wenne CUSTOMER wenuwata 0, ADMIN wenuwata 1, RESTAURANT_OWNER wenuwata 2 widihata. 
+    // Habai meka damme nisa database eke save wenne "CUSTOMER", "ADMIN", "RESTAURANT_OWNER" widihata.
     @Column(nullable = false)
     private Role role;
 
