@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lk.ijse.cmjd113.FoodOrderingSystem.dao.UserDAO;
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.UserDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.UserEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
 
@@ -27,8 +28,22 @@ public class UserServiceIMPL implements UserService {
 
     // saveUser method eka mekata UserEntity ekak dunahama, eka kelinma ara userDAO.save() ekata pass karala database eke save karanawa.
     // Save wechcha data tika apahu return karanawa.
+    // @Override
+    // public UserEntity saveUser(UserEntity user) {
+    //     return userDAO.save(user);  
+    // }
+
     @Override
-    public UserEntity saveUser(UserEntity user) {
-        return userDAO.save(user);  
+    public void saveUser(UserDTO userDto) {
+
+        UserEntity userEntity = new UserEntity();
+
+        userEntity.setFirstName(userDto.getFirstName());
+        userEntity.setLastName(userDto.getLastName());
+        userEntity.setEmail(userDto.getEmail());
+        userEntity.setPhoneNumber(userDto.getPhoneNumber());
+        userEntity.setPassword(userDto.getPassword());
+
+        userDAO.save(userEntity);
     }
 }

@@ -1,6 +1,8 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.service;
 
-import lk.ijse.cmjd113.FoodOrderingSystem.entities.UserEntity;
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.UserDTO;
+
+// import lk.ijse.cmjd113.FoodOrderingSystem.entities.UserEntity;
 
 // meken karanne monawada karanna ona kiyana interface eka hadana eka.
 
@@ -43,4 +45,6 @@ public interface UserService {
     // - Habai aluth kramayata frontend eke digatam DTO eke thiyana firstName ma pawichchi karanawa.
     // - "entity.setF_name(dto.getFirstName())" kiyala code eka poddak wenas karanna witharai thiyenne.
     // - Anith kisi dekata haniyak wenne naha.
+
+    void saveUser(UserDTO userDto);     // me method eka damme user ekak database eke save karanna.
 }
