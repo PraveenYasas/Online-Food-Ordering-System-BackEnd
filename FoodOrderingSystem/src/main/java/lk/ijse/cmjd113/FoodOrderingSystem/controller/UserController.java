@@ -21,12 +21,12 @@ import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
 
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserService userService;    // Service ekata katha karanna eka methanata sambanda karagannawa.
 
     @PostMapping("/register")   
     public String registerUser(@RequestBody UserDTO userDTO) {
 
-        userService.saveUser(userDTO);
+        userService.saveUser(userDTO);          // Frontend apu daththa tika Service ekata ywanawa save karanna kiyala.
         return "User registered successfully";
     }
 }
