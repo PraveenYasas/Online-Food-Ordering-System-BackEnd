@@ -1,8 +1,14 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.UserDTO;
+import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
 
 // me controller class eka hariyata ape receptionist kenek wage.
 // frontend eken ewana JSON data tika mulinma catch karaganne meya.
@@ -14,5 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin                        // front end eke port ekekin katha karanakota Block wenne nathiwenna meka danawa.
 
 public class UserController {
-    
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/register")   
+    public String registerUser(@RequestBody UserDTO userDTO) {
+
+        userService.saveUser(userDTO);
+        return "User registered successfully";
+    }
 }
