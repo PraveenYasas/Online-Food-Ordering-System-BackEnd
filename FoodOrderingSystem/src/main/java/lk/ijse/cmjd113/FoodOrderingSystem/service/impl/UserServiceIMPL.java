@@ -1,5 +1,6 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.service.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,16 +34,24 @@ public class UserServiceIMPL implements UserService {
     //     return userDAO.save(user);  
     // }
 
+    @Autowired
+    private ModelMapper modelMapper;    // hadagaththa model mapper eka sambanda karagannawa.
+
     @Override
     public void saveUser(UserDTO userDto) {
 
-        UserEntity userEntity = new UserEntity();
+        // UserEntity userEntity = new UserEntity();
 
-        userEntity.setFirstName(userDto.getFirstName());
-        userEntity.setLastName(userDto.getLastName());
-        userEntity.setEmail(userDto.getEmail());
-        userEntity.setPhoneNumber(userDto.getPhoneNumber());
-        userEntity.setPassword(userDto.getPassword());
+        // userEntity.setFirstName(userDto.getFirstName());
+        // userEntity.setLastName(userDto.getLastName());
+        // userEntity.setEmail(userDto.getEmail());
+        // userEntity.setPhoneNumber(userDto.getPhoneNumber());
+        // userEntity.setPassword(userDto.getPassword());
+
+                    // kalin peli 4k 5k liyapu eka dan eka peliyai.
+
+                    // meken kiyanne userDTO eke thiyana data tika aragena aluth UserEntity ekak hadala ekata danna kiyana ekai.
+        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
 
         userDAO.save(userEntity);
     }
