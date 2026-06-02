@@ -5,8 +5,6 @@ package lk.ijse.cmjd113.FoodOrderingSystem.entities;
 
 import java.time.LocalDateTime;
 
-import javax.management.relation.Role;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lk.ijse.cmjd113.FoodOrderingSystem.entities.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
