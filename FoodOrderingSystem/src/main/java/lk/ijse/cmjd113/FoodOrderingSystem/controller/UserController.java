@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.LoginDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.UserDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
 
@@ -28,5 +29,10 @@ public class UserController {
 
         userService.saveUser(userDTO);          // Frontend apu daththa tika Service ekata ywanawa save karanna kiyala.
         return "User registered successfully";
+    }
+
+    @PostMapping("/login")
+    public String loginUser(@RequestBody LoginDTO loginDTO) {
+        return userService.loginUser(loginDTO);    // Frontend apu daththa tika Service ekata ywanawa login karanna kiyala.
     }
 }
