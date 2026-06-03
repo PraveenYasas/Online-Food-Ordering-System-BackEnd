@@ -61,16 +61,21 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     public String loginUser(LoginDTO loginDto) {
+
+        // Mulinma balanawa me email eken user kenek innawada kiyala.
         Optional<UserEntity> userOptional = userDAO.findByEmail(loginDto.getEmail());
 
         if (userOptional.isPresent()) {
+            // Email eka thiyanawa nam Data tika eliyata gannawa.
             UserEntity user = userOptional.get();
+
             if (user.getPassword().equals(loginDto.getPassword())) {
-                return "Login successful";
+                return "Login successful";      // (Issarahata api methanin Token ekak yawanawa.)
             } else {
                 return "Invalid password";
             }
         } else {
+            // Email eka data base eke nath nam mekeham ekak pennawanawa.
             return "User not found";
         }
     }
