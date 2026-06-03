@@ -1,5 +1,6 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.service;
 
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.LoginDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.UserDTO;
 
 // import lk.ijse.cmjd113.FoodOrderingSystem.entities.UserEntity;
@@ -47,4 +48,11 @@ public interface UserService {
     // - Anith kisi dekata haniyak wenne naha.
 
     void saveUser(UserDTO userDto);     // me method eka damme user ekak database eke save karanna.
+
+    String loginUser(LoginDTO loginDto);    // me method eka damme user ekak login karanna.
+                                            // meken kiyanne frontend eken ewana email ekai password ekai thiyana me method eka athulata baragannawa kiyana ekai.
+                                            // String - kalin eke mulata thiyenne void kiyana eka.
+                                                //      E kiyane eka non return type ekak kiyana eka. 
+                                                //      Habai login weddi meke thiyenne String kiyana eka.
+                                                //      E kiyanne method eka wade iwara karala mokak hari ekak String type ekakin return karanna ona kiuyala.
 }
