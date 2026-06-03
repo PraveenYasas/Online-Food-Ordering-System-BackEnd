@@ -1,11 +1,14 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.service.impl;
 
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lk.ijse.cmjd113.FoodOrderingSystem.dao.UserDAO;
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.LoginDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.UserDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.UserEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
@@ -54,5 +57,21 @@ public class UserServiceIMPL implements UserService {
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
 
         userDAO.save(userEntity);
+    }
+
+    @Override
+    public String loginUser(LoginDTO loginDto) {
+        Optional<UserEntity> userOptional = userDAO.findByEmail(loginDto.getEmail());
+
+        if (userOptional.isPresent()) {
+            UserEntity user = userOptional.get();
+            if (user.getPassword().equals(loginDto.getPassword())) {
+                return "Login successful";
+            } else {
+                return "Invalid password";
+            }
+        } else {
+            return "User not found";
+        }
     }
 }
