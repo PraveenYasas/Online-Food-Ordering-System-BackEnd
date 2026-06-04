@@ -21,18 +21,31 @@ import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
 @CrossOrigin                        // front end eke port ekekin katha karanakota Block wenne nathiwenna meka danawa.
 
 public class UserController {
-    @Autowired
+
+    @Autowired                  // Methanin karanne ape conntroller ekai, ara api kalin hadapu UserService ekai athara connection eka hadana eka.
+                                // Samanyayen java walanam UserService userService = new UserServiceImpl(); kiyala gahanna ona.
+                                // Habai @Autowired kiyala dammahama mukuth one naha spring eken ibema sambanda karala denawa. (Dependency Injection kiyanne mekata)
+                                // Ethakota controller ekata puluwan service ekata orders denna
+
     private UserService userService;    // Service ekata katha karanna eka methanata sambanda karagannawa.
 
-    @PostMapping("/register")   
-    public String registerUser(@RequestBody UserDTO userDTO) {
+    @PostMapping("/register")   // Frontend eken alth user kenek save karanna request ewwwahama eka enne mee register kiyana (API endpoint ekata).
+                                // meka dakka gaman yata thiyana method eka aharenawa.
 
-        userService.saveUser(userDTO);          // Frontend apu daththa tika Service ekata ywanawa save karanna kiyala.
-        return "User registered successfully";
+    public String registerUser(@RequestBody UserDTO userDTO) {  // Frontend eken ewanne JSON format eken.
+                                                                // Me @RequestBody eken karanne ee ena JSON data tika catch karagena lassanata api ara hadapu UserDTO eka athulata yawana ekai.
+                                                                
+
+        userService.saveUser(userDTO);          // Controller eka kelinma Database ekata atha danne naa.
+                                                // Eyaa karanne ara aapu DTO eka Service ekata pass karala kiyanawa "Menna meka save karala denna kiyala".
+                                                
+        return "User registered successfully";  // Wade iwara unagaman react ekata mesg ekak yawanawa.
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login")      // Kalin eka wagea thama.
+                                // React eken ewana Email ekai Password ekai allaganna methanadi pawichchi karanne LogiDTO eka.
+
     public String loginUser(@RequestBody LoginDTO loginDTO) {
-        return userService.loginUser(loginDTO);    // Frontend apu daththa tika Service ekata ywanawa login karanna kiyala.
+        return userService.loginUser(loginDTO);    // Methanadi SaveUser ekewge neweii, kellinma Service eken enade React ekat return karanawa.
     }
 }
