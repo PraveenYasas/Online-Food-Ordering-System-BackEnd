@@ -17,7 +17,7 @@ import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
 // "Menna meka save karala denna kiyala".
 
 @RestController                     // Meka API endpont ekak kiyyala Spring boot ekata kiyanne meken.
-@RequestMapping("/api/v1/users")    // Me Controller ekata enna ona prdhana URL eka.
+@RequestMapping("/users")           // Me Controller ekata enna ona prdhana URL eka.
 @CrossOrigin                        // front end eke port ekekin katha karanakota Block wenne nathiwenna meka danawa.
 
 public class UserController {
