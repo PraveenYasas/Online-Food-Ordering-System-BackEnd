@@ -11,6 +11,7 @@ import lk.ijse.cmjd113.FoodOrderingSystem.dao.UserDAO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.LoginDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.UserDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.UserEntity;
+import lk.ijse.cmjd113.FoodOrderingSystem.entities.enums.Role;
 import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
 
 // Spring boot walata meka service ekak kiyala dana ganna me anotaion eka aniwaryai.
@@ -55,6 +56,8 @@ public class UserServiceIMPL implements UserService {
 
                     // meken kiyanne userDTO eke thiyana data tika aragena aluth UserEntity ekak hadala ekata danna kiyana ekai.
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+
+        userEntity.setRole(Role.CUSTOMER);
 
         userDAO.save(userEntity);
     }
