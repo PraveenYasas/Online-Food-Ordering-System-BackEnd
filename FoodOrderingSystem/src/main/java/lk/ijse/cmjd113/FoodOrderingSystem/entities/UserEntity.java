@@ -41,7 +41,7 @@ public class UserEntity {
     private String email;               // Email eka aniwaryai, duplicate email ekak database eke save karanna ba.
 
     @Column(nullable = false)
-    private String phoneNumber;
+    private String phone;
 
     @Column(nullable = false)
     private String password;
