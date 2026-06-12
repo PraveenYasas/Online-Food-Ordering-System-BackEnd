@@ -33,6 +33,11 @@ public class FoodItemEntity {
     private double price;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity category;
+    @JoinColumn(name = "category_id", nullable = false) // @JoinColumn(name = "category_id", nullable = false)
+                                                        // mekan thamai data base ekata kiyanne ara categories table ekath ekka sambanda wenna me table eka athule Foreign Key Column ekak hadanna kiyala.
+                                                        // ee column eke nama category_id wenna ona,
+                                                        // nullable = false dala thiyana nisa system ekata dana hama kaamakma aniwaryayenma mokak hari category ekakata aithi wenna ona.
+
+    private CategoryEntity category;    // meken thamai java code eka athule adala kama ekai category ekai link karanne.
+                                        // me kaama ekama aithiwena mulu category object ekama me asse save karagena thiyaganna puluwan.
 }
