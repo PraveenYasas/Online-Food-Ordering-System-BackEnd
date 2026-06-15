@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+// front end eke indan ena kaama wala wisthara aran ena data tika thiyaganna ona, 
+// meka data transfer object ekak (DTO) kiyana eka.
+
+@Data                   // meka dammahama getters and setters, toString, equals, hashCode methods tika auto generate karala denawa.
 @NoArgsConstructor
 @AllArgsConstructor
 
