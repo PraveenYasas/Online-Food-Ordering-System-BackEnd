@@ -6,22 +6,22 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lk.ijse.cmjd113.FoodOrderingSystem.dao.CategoryDAO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.CategoryDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.CategoryEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
+
 public class CategoryServiceIMPL implements CategoryService {
 
     private final CategoryDAO categoryDAO;
 
     private final ModelMapper modelMapper;
-
-    public CategoryServiceIMPL(CategoryDAO categoryDAO, ModelMapper modelMapper) {
-        this.categoryDAO = categoryDAO;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public CategoryDTO saveCategory(CategoryDTO categoryDTO) {
