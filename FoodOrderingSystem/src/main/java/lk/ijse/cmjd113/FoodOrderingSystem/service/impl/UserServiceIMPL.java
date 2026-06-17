@@ -3,7 +3,6 @@ package lk.ijse.cmjd113.FoodOrderingSystem.service.impl;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -13,6 +12,7 @@ import lk.ijse.cmjd113.FoodOrderingSystem.dto.UserDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.UserEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.enums.Role;
 import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
+import lombok.RequiredArgsConstructor;
 
 // Spring boot walata meka service ekak kiyala dana ganna me anotaion eka aniwaryai.
 
@@ -20,16 +20,20 @@ import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
 //                  - Controller eken kathaa karapu gaman aran denawa
 @Service        
 
+// @Transactional  - me anotaion eka dammahama database ekath ekka wada karaddi mokak hari awulak unoth okkoma apahu rollback karanna me anotaion eka udaw wenawa.
+//                 - Database ekath ekka wada karaddi mokak hari awulak unoth okkoma apahu rollback karanna me anotaion eka udaw wenawa.
+@Transactional  
 
-@Transactional  // Database ekath ekka wada karaddi mokak hari awulak unoth okkoma apahu rollback karanna me anotaion eka udaw wenawa.
+// RequiredArgsConstructor - me anotaion eka dammahama final variable ekak thiyenawanam, e variable ekata constructor ekak hadala denawa. (Constructor injection kiyana eka).
+@RequiredArgsConstructor
 
 public class UserServiceIMPL implements UserService {
 
     // @Autowired  - meken karanne api kalin hadapu UserDAO intefce eke object ekak aluthen hadanne nathuwa (new UserDAO() kiyala gahanne nathuwa) springboot ekatama kiyala ibetama sambanda karana ekai.
     //             - mekata kiyanne dependency injection kiayana eka.
 
-    @Autowired  // Api kalin hadapu UserDAO eka methanata sambanda karanawa.
-    private UserDAO userDAO;
+    // @Autowired  // Api kalin hadapu UserDAO eka methanata sambanda karanawa.
+    private final UserDAO userDAO;
 
     // saveUser method eka mekata UserEntity ekak dunahama, eka kelinma ara userDAO.save() ekata pass karala database eke save karanawa.
     // Save wechcha data tika apahu return karanawa.
@@ -38,8 +42,8 @@ public class UserServiceIMPL implements UserService {
     //     return userDAO.save(user);  
     // }
 
-    @Autowired
-    private ModelMapper modelMapper;    // hadagaththa model mapper eka sambanda karagannawa.
+    // @Autowired
+    private final ModelMapper modelMapper;    // hadagaththa model mapper eka sambanda karagannawa.
 
     @Override
     public void saveUser(UserDTO userDto) {
