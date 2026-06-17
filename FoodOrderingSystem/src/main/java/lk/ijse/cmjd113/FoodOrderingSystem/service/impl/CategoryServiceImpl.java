@@ -38,15 +38,21 @@ public class CategoryServiceIMPL implements CategoryService {
 
     @Override
     public List<CategoryDTO> getAllCategories() {
-        List<CategoryEntity> categoryEntities = categoryDAO.findAll();
+        List<CategoryEntity> categoryEntities = categoryDAO.findAll();  // meken karanne database eke thiyena categories serama aragena categoryEntities kiyana llist ekata daganna ekai.
+                                                                        // mewa thiyenne entity widihata.
 
-        List<CategoryDTO> categoryDTOList = new ArrayList<>();
+        List<CategoryDTO> categoryDTOList = new ArrayList<>();  // Aluth DTO list ekak hadanawa (Convert karana ewwa ekathu karaganna).
 
+        // For loop ekak dala ara apu entity List eke thiyana ewwa ekin eka gannawa.
         for (CategoryEntity categoryEntity : categoryEntities) {
+            // Ekin eka aragena ModelMapper eken DTO ekata convert karanawa.
             CategoryDTO categoryDTO = modelMapper.map(categoryEntity, CategoryDTO.class);
+
+            // Convert karapu DTO eka ara aluth list ekata danawa.
             categoryDTOList.add(categoryDTO);
         }
 
+        // anthimata ara okoma ekathukaragaththa DTO list eka return karanawa.
         return categoryDTOList;
     }
 }
