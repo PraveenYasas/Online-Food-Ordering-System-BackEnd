@@ -6,12 +6,11 @@ package lk.ijse.cmjd113.FoodOrderingSystem.dao;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.UserEntity;
 
-// @Repository       - meken springboot ekata kiyanawa meka thama database ekath ekka ganu denu karana pradhana kalla kiyala.
-@Repository
+// // @Repository       - meken springboot ekata kiyanawa meka thama database ekath ekka ganu denu karana pradhana kalla kiyala.
+// @Repository
 
 // extends JpaRepository<UserEntity, Long>.    - UserEntity kiyanne ape entitiy eka
 //                                             - Long kiyanne eke primary key eke data type eka.
