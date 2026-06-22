@@ -20,6 +20,6 @@ import lombok.NoArgsConstructor;
                         // Meka godak welawata onawenne api code eka liyaddi eka test karaganna ona unahama meka watinawa.
 
 public class LoginDTO {
-    private String Email;
-    private String Password;
+    private String email;
+    private String password;
 }
