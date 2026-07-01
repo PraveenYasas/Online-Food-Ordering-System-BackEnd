@@ -1,5 +1,15 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
+
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.CategoryDTO;
+import lk.ijse.cmjd113.FoodOrderingSystem.entities.CategoryEntity;
+import lombok.RequiredArgsConstructor;
+
 // Me class eka thiyenne thikak loku "Translator" kenek widihata.
 // Api danata hadapu FoodOrderingSystem eke api DTO eka Entity ekata harawana wada (mapping) kare kelinma ServiceImpl eka athulene (modelMapper.map(...) kiyala gahala).
 // Habai me Mapper.java eke karala thiyenne, e map karana wada okkoma eka thanakata (meka athulata) genath dapu eka.
@@ -21,6 +31,26 @@ package lk.ijse.cmjd113.FoodOrderingSystem.util;
 //          Me class eke eka eka parak lassanata liyala thiyenawa toUserDtoList wage methods athule.
 //          Eka nisa wena ona tharam Services waladi thawa dura hitha hitha inne nathuwa kelinma mapper.toUserDtoList(list) kiyala call karanna puluwan.
 
+@Component
+@RequiredArgsConstructor
+
 public class Mapper {
+    private final ModelMapper modelMapper;
+
+    // category mappings
+    public CategoryDTO toCategoryDTO(CategoryEntity categoryEntity) {
+        return modelMapper.map(categoryEntity, CategoryDTO.class);
+    }
     
+    public CategoryEntity toCategoryEntity(CategoryDTO categoryDTO) {
+        return modelMapper.map(categoryDTO, CategoryEntity.class);
+    }
+
+    public List<CategoryDTO> toCategoryDTOList(List<CategoryEntity> categoryEntityList) {
+        List<CategoryDTO> categoryDTOList = new ArrayList<>();
+        for (CategoryEntity entity : categoryEntityList) {
+            categoryDTOList.add(toCategoryDTO(entity));
+        }
+        return categoryDTOList;
+    }
 }
