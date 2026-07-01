@@ -7,7 +7,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.CategoryDTO;
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.FoodItemDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.CategoryEntity;
+import lk.ijse.cmjd113.FoodOrderingSystem.entities.FoodItemEntity;
 import lombok.RequiredArgsConstructor;
 
 // Me class eka thiyenne thikak loku "Translator" kenek widihata.
@@ -38,6 +40,7 @@ public class Mapper {
     private final ModelMapper modelMapper;
 
     // category mappings
+    
     public CategoryDTO toCategoryDTO(CategoryEntity categoryEntity) {
         return modelMapper.map(categoryEntity, CategoryDTO.class);
     }
@@ -52,5 +55,28 @@ public class Mapper {
             categoryDTOList.add(toCategoryDTO(entity));
         }
         return categoryDTOList;
+    }
+
+    // Food Item mapping
+
+    public FoodItemDTO toFoodItemDTO(FoodItemEntity foodItemEntity) {
+        FoodItemDTO dto = modelMapper.map(foodItemEntity, FoodItemDTO.class);
+
+        if (foodItemEntity.getCategory() != null) {
+            dto.setCategoryId(foodItemEntity.getCategory().getId());
+        }
+        return dto;
+    }
+
+    public FoodItemEntity toFoodItemEntity(FoodItemDTO foodItemDTO) {
+        return modelMapper.map(foodItemDTO, FoodItemEntity.class);
+    } 
+
+    public List<FoodItemDTO> toFoodItemDTOList (List<FoodItemEntity> foodItemEntityList) {
+        List<FoodItemDTO> dtoList = new ArrayList<>();
+        for (FoodItemEntity entity : foodItemEntityList) {
+            dtoList.add(toFoodItemDTO(entity));
+        }
+        return dtoList;
     }
 }
