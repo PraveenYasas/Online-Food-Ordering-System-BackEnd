@@ -33,22 +33,33 @@ import lombok.RequiredArgsConstructor;
 //          Me class eke eka eka parak lassanata liyala thiyenawa toUserDtoList wage methods athule.
 //          Eka nisa wena ona tharam Services waladi thawa dura hitha hitha inne nathuwa kelinma mapper.toUserDtoList(list) kiyala call karanna puluwan.
 
-@Component
-@RequiredArgsConstructor
+@Component              // meken springboot walata kiyanawa meken object ekak hadala oyage mathake thiyaganna kiyala (Aplication context ekata register karala thiyaganna kiyala)
+                        // mata ona unahama mama illagannam kiyala.
+                        // ethakota api hama thanama new Mapper() kiyala gahanna one naha.
+
+@RequiredArgsConstructor// meken ara palleha thiyana private final ModelMapper modelMapper;
+                        // ekata awshya Constructor eka ibema hadala denawa.
 
 public class Mapper {
+    // meka thama aththatama data convert karana matchine eka. (ModelMapper library eka)
+    // meka api me class eka athulata inject karagannawa.
     private final ModelMapper modelMapper;
 
     // category mappings
     
+    // Database eken ena category ekak (Entity), Frontend ekata yawanna puluwan widihata (DTO) eka convert karala dena eka thama karanne.
+    // modelMapper.map() ekata api adala object ekai, harawenna ona class ekai dunahama eyaa eka lassanata harawala denawa. 
     public CategoryDTO toCategoryDTO(CategoryEntity categoryEntity) {
         return modelMapper.map(categoryEntity, CategoryDTO.class);
     }
     
+    // meka arake anith paththa. Frontend eken ena data (DTO) database ekata save karaganna puluwan widihata (Entity) harawana ekai meken karanne.
     public CategoryEntity toCategoryEntity(CategoryDTO categoryDTO) {
         return modelMapper.map(categoryDTO, CategoryEntity.class);
     }
 
+    // meka thamai list convert karana kalla. Database eken categories godak awahama meken karanne aluth his DTO list ekak hadanawa. (new ArrayList<>()).
+    // ita pase for loop ekak dala ara apu llist eke thiyana ewwa ekin eka aragena ara uda hadapu toCategoryDTO() method ekata yawala convert karala aluth list ekakata ekathu karanawa.
     public List<CategoryDTO> toCategoryDTOList(List<CategoryEntity> categoryEntityList) {
         List<CategoryDTO> categoryDTOList = new ArrayList<>();
         for (CategoryEntity entity : categoryEntityList) {
