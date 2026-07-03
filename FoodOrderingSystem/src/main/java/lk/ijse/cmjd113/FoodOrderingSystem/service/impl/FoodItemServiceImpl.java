@@ -1,10 +1,8 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +12,7 @@ import lk.ijse.cmjd113.FoodOrderingSystem.dto.FoodItemDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.CategoryEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.FoodItemEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.service.FoodItemService;
+import lk.ijse.cmjd113.FoodOrderingSystem.util.Mapper;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,70 +22,65 @@ public class FoodItemServiceImpl implements FoodItemService {
 
     private final FoodItemDAO foodItemDAO;
     private final CategoryDAO categoryDAO; 
-    private final ModelMapper modelMapper;
+    private final Mapper mapper; 
 
     @Override
     public FoodItemDTO saveFoodItem(FoodItemDTO foodItemDTO) {
         
-        // 1. Frontend එකෙන් එවපු Category ID එක Database එකේ තියෙනවද බලනවා
+        // 1. Frontend eken ewapu Category ID eka Database eke thiyanawada balanawa.
         Optional<CategoryEntity> categoryOptional = categoryDAO.findById(foodItemDTO.getCategoryId());
         
-        // ඒ ID එකට අදාළ Category එකක් නැත්නම් එරර් එකක් දෙනවා
+        // ee ID eata adala Category ekak nath nam error ekak denawa.
         if (!categoryOptional.isPresent()) {
             throw new RuntimeException("Category not found!");
         }
 
-        // Category එක තියෙනවා නම් ඒක Optional එක ඇතුළෙන් එළියට ගන්නවා
+        // Category eka thiyanawa nam eka Optional eka thulen eliyata annawa
         CategoryEntity category = categoryOptional.get();
 
-        // 2. DTO එක Entity එකකට කන්වර්ට් කරනවා
-        FoodItemEntity foodItemEntity = modelMapper.map(foodItemDTO, FoodItemEntity.class);
+        // DTO eka Entity ekakata convert karanawa
+        FoodItemEntity foodItemEntity = mapper.toFoodItemEntity(foodItemDTO);   // ape mapper eken entity ekata harawanawa.
         
-        // 3. අර හොයාගත්ත Category එක මේ කෑම එකට සෙට් කරනවා
+        // Ara hoyagaththa Category eka me kaama ekata set karanawa.
         foodItemEntity.setCategory(category);
 
-        // 4. Database එකට සේව් කරනවා
+        // Database ekata save karanawa.
         FoodItemEntity savedFoodItem = foodItemDAO.save(foodItemEntity);
 
-        // 5. සේව් වෙච්ච එක ආයෙත් DTO එකකට හරවලා රිටර්න් කරනවා
-        return modelMapper.map(savedFoodItem, FoodItemDTO.class);
+        // Save wechcha eka aayeth DTO ekakata harawala return karanawa.
+        return mapper.toFoodItemDTO(savedFoodItem); 
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<FoodItemDTO> getAllFoodItems() {
         
-        // 1. ඔක්කොම Food Items ටික ගන්නවා
+        // Okkoma Food Items tika gannawa
         List<FoodItemEntity> foodItemEntities = foodItemDAO.findAll();
         
-        // 2. හිස් DTO ලිස්ට් එකක් හදනවා
-        List<FoodItemDTO> foodItemDTOList = new ArrayList<>();
+        // ara mapper class eka hadapu nisa dan methana for loop eka danna one naha.
 
-        // 3. For Loop එකෙන් එකින් එක කන්වර්ට් කරලා ලිස්ට් එකට දානවා
-        for (FoodItemEntity entity : foodItemEntities) {
-            FoodItemDTO dto = modelMapper.map(entity, FoodItemDTO.class);
-            foodItemDTOList.add(dto);
-        }
+        // // His DTO list ekak hadanawa
+        // List<FoodItemDTO> foodItemDTOList = new ArrayList<>();
 
-        return foodItemDTOList;
+        // // For Loop eken ekin eka convertt karala list ekakata add karanawa.
+        // for (FoodItemEntity entity : foodItemEntities) {
+        //     FoodItemDTO dto = modelMapper.map(entity, FoodItemDTO.class);
+        //     foodItemDTOList.add(dto);
+        // }
+
+        return mapper.toFoodItemDTOList(foodItemEntities);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<FoodItemDTO> getFoodItemsByCategory(Long categoryId) {
         
-        // 1. අදාළ Category එකට අයිති කෑම ටික විතරක් ගන්නවා
+        // adala Category ekata aithi kama tika witharak gannawa
         List<FoodItemEntity> foodItemEntities = foodItemDAO.findByCategoryId(categoryId);
         
-        // 2. හිස් DTO ලිස්ට් එකක් හදනවා
-        List<FoodItemDTO> foodItemDTOList = new ArrayList<>();
+        // methanath ara kalin wagema aaith for loop liaya liya inna one naha.
 
-        // 3. For Loop එකෙන් එකින් එක කන්වර්ට් කරලා ලිස්ට් එකට දානවා
-        for (FoodItemEntity entity : foodItemEntities) {
-            FoodItemDTO dto = modelMapper.map(entity, FoodItemDTO.class);
-            foodItemDTOList.add(dto);
-        }
-
-        return foodItemDTOList;
+        return mapper.toFoodItemDTOList(foodItemEntities);
     }
 }

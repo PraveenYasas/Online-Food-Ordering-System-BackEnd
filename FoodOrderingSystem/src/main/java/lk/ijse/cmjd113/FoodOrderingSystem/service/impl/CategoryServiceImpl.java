@@ -1,16 +1,15 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 import lk.ijse.cmjd113.FoodOrderingSystem.dao.CategoryDAO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.CategoryDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.CategoryEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.service.CategoryService;
+import lk.ijse.cmjd113.FoodOrderingSystem.util.Mapper;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -27,9 +26,15 @@ import lombok.RequiredArgsConstructor;
 
 public class CategoryServiceIMPL implements CategoryService {
 
+    // private final controller.CategoryController categoryController;
+
     private final CategoryDAO categoryDAO;
 
-    private final ModelMapper modelMapper;
+    private final Mapper mapper;  // meken karanne ModelMapper eken karana wada thama me class eke thiyenne. (DTO eka Entity ekata harawana wada)
+
+    // CategoryServiceIMPL(controller.CategoryController categoryController) {
+    //     this.categoryController = categoryController;
+    // }
 
     // methanata dan constructor ekak liyala thiyenne na, 
     // @RequredArgsConstructor dammahama ehema karanna one naha. 
@@ -48,7 +53,10 @@ public class CategoryServiceIMPL implements CategoryService {
         // Ape Database eka DTO kiyana eka aduranne naha.
         // Eyaata therenne Entity witharai.
         // Enisa api ModelMapper pawichchi karala ara apu categoryDTO eke thiyena data tika aluth CategoryEntity ekakata copy karanawa.
-        CategoryEntity categoryEntity = modelMapper.map(categoryDTO, CategoryEntity.class);
+        // CategoryEntity categoryEntity = modelMapper.map(categoryDTO, CategoryEntity.class);
+
+        CategoryEntity categoryEntity = mapper.toCategoryEntity(categoryDTO);   // meken karanne ModelMapper eken karana wada thama me class eke thiyenne. 
+                                                                                // (DTO eka Entity ekata harawana wada)
 
         // Database ekata save kireema
         // Dan ara haduna Entity eka api ape categoryDAO ekata deela kiyanawa meka databse eke save karanna kiyala.
@@ -60,27 +68,34 @@ public class CategoryServiceIMPL implements CategoryService {
         // Apahu DTO ekata harawa yaweema
         // Industry standed ekata anuwa api kawadawath data base eke thiyana entity ekak ee widihatama frontEnd ekata yawanna one naha.
         // E nisa aaith sarayak ModelMapper eka pawichci karala ara savewechaha savedCategory(Entity eka) CategoryDTO ekata convert karagena eka rwturn karanawa.
-        return modelMapper.map(savedCategory, CategoryDTO.class);
+        // return modelMapper.map(savedCategory, CategoryDTO.class);
+
+        return mapper.toCategoryDTO(savedCategory);     // meken karanne ModelMapper eken karana wada thama me class eke thiyenne. 
+                                                        // (DTO eka Entity ekata harawana wada)
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDTO> getAllCategories() {
         List<CategoryEntity> categoryEntities = categoryDAO.findAll();  // meken karanne database eke thiyena categories serama aragena categoryEntities kiyana llist ekata daganna ekai.
                                                                         // mewa thiyenne entity widihata.
 
-        List<CategoryDTO> categoryDTOList = new ArrayList<>();  // Aluth DTO list ekak hadanawa (Convert karana ewwa ekathu karaganna).
+        // List<CategoryDTO> categoryDTOList = new ArrayList<>();  // Aluth DTO list ekak hadanawa (Convert karana ewwa ekathu karaganna).
 
-        // For loop ekak dala ara apu entity List eke thiyana ewwa ekin eka gannawa.
-        for (CategoryEntity categoryEntity : categoryEntities) {
+        // // For loop ekak dala ara apu entity List eke thiyana ewwa ekin eka gannawa.
+        // for (CategoryEntity categoryEntity : categoryEntities) {
 
-            // Ekin eka aragena ModelMapper eken DTO ekata convert karanawa.
-            CategoryDTO categoryDTO = modelMapper.map(categoryEntity, CategoryDTO.class);
+        //     // Ekin eka aragena ModelMapper eken DTO ekata convert karanawa.
+        //     CategoryDTO categoryDTO = modelMapper.map(categoryEntity, CategoryDTO.class);
 
-            // Convert karapu DTO eka ara aluth list ekata danawa.
-            categoryDTOList.add(categoryDTO);
-        }
+        //     // Convert karapu DTO eka ara aluth list ekata danawa.
+        //     categoryDTOList.add(categoryDTO);
+        // }
+
+        // oya uda kallath ain une api mapper class eka pawichchi karapu nisa categoryController ekata call karala ara apu list eka convert karala aluth list ekakata daganna puluwan.
+        return mapper.toCategoryDTOList(categoryEntities);  // meken karanne ModelMapper eken karana wada thama me class eke thiyenne. (DTO eka Entity ekata harawana wada)
 
         // anthimata ara okoma ekathukaragaththa DTO list eka return karanawa.
-        return categoryDTOList;
+        //return categoryDTOList;
     }
 }
