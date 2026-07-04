@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FoodItemServiceImpl implements FoodItemService {
+public class FoodItemServiceIMPL implements FoodItemService {
 
     private final FoodItemDAO foodItemDAO;
     private final CategoryDAO categoryDAO; 
