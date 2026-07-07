@@ -115,6 +115,10 @@ public class Mapper {
         return dto;
     }
 
+    public OrderEntity toOrderEntity(OrderDTO orderDTO) {
+        return modelMapper.map(orderDTO, OrderEntity.class);
+    }
+
     // Order Detail mapping
 
     // methanadi api Data base eke thiyana FoodItemEntity eka athulata gihin kama eke nama aragena DTo ekata danawa.
