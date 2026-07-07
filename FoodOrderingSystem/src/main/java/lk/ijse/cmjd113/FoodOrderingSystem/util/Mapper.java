@@ -6,10 +6,15 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import lk.ijse.cmjd113.FoodOrderingSystem.dao.OrderDetailDAO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.CategoryDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.FoodItemDTO;
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.OrderDTO;
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.OrderDetailDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.CategoryEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.FoodItemEntity;
+import lk.ijse.cmjd113.FoodOrderingSystem.entities.OrderDetailEntity;
+import lk.ijse.cmjd113.FoodOrderingSystem.entities.OrderEntity;
 import lombok.RequiredArgsConstructor;
 
 // Me class eka thiyenne thikak loku "Translator" kenek widihata.
@@ -87,6 +92,46 @@ public class Mapper {
         List<FoodItemDTO> dtoList = new ArrayList<>();
         for (FoodItemEntity entity : foodItemEntityList) {
             dtoList.add(toFoodItemDTO(entity));
+        }
+        return dtoList;
+    }
+
+    // ordering mappings
+
+    public OrderDTO toOrderDTO(OrderEntity orderEntity) {
+        OrderDTO dto = modelMapper.map(orderEntity, OrderDTO.class);
+
+        // User ge ID eka witharak set karanawa. (Me wage wenama mapping ekak thiyenawanam meka Service eke liwwoth code eka katha wenawa.)
+        if (orderEntity.getUser() != null) {
+            dto.setUserId(orderEntity.getUser().getId());
+        }
+
+        // kama list eka harawanawa.
+        if (orderEntity.getOrderDetails() != null) {
+            dto.setOrderDetails(toOrderDetailDTOList(orderEntity.getOrderDetails()));
+        }
+
+        return dto;
+    }
+
+    // Order Detail mapping
+
+    public OrderDetailDTO toOrderDetailDTO(OrderDetailEntity detailEntity) {
+        OrderDetailDTO dto = modelMapper.map(detailEntity, OrderDetailDTO.class);
+        
+        // kama eke nama saha ID eka set karanawa. (Me wage wenama mapping ekak thiyenawanam meka Service eke liwwoth code eka katha wenawa.)
+        if (detailEntity.getFoodItem() != null) {
+            dto.setFoodItemId(detailEntity.getFoodItem().getId());
+            dto.setFoodItemName(detailEntity.getFoodItem().getName());
+        }
+        
+        return dto;
+    }
+
+    public List<OrderDetailDTO> toOrderDetailDTOList(List<OrderDetailEntity> detailEntityList) {
+        List<OrderDetailDTO> dtoList = new ArrayList<>();
+        for (OrderDetailEntity entity : detailEntityList) {
+            dtoList.add(toOrderDetailDTO(entity));
         }
         return dtoList;
     }
