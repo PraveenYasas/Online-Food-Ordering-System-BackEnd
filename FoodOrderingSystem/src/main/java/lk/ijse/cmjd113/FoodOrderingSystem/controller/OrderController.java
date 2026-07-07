@@ -1,0 +1,26 @@
+package lk.ijse.cmjd113.FoodOrderingSystem.controller;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import lk.ijse.cmjd113.FoodOrderingSystem.dto.OrderDTO;
+import lk.ijse.cmjd113.FoodOrderingSystem.service.OrderService;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/orders")
+@CrossOrigin
+@RequiredArgsConstructor
+
+public class OrderController {
+
+    private final OrderService orderService;
+
+    @PostMapping
+    public OrderDTO placeOrder(@RequestBody OrderDTO orderDTO) {
+        return orderService.placeOrder(orderDTO);
+    }
+}
