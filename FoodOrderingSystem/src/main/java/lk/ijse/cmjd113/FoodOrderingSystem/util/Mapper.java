@@ -6,7 +6,6 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import lk.ijse.cmjd113.FoodOrderingSystem.dao.OrderDetailDAO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.CategoryDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.FoodItemDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.OrderDTO;
@@ -98,6 +97,8 @@ public class Mapper {
 
     // ordering mappings
 
+    // mekedi api order DTO eka harawana gamanma, eka athule thiyana OrderDetailEntity list ekath convert karanawa.
+    // enisa front end ekata mulu bilama eka paara watenawa.
     public OrderDTO toOrderDTO(OrderEntity orderEntity) {
         OrderDTO dto = modelMapper.map(orderEntity, OrderDTO.class);
 
@@ -116,6 +117,8 @@ public class Mapper {
 
     // Order Detail mapping
 
+    // methanadi api Data base eke thiyana FoodItemEntity eka athulata gihin kama eke nama aragena DTo ekata danawa.
+    // ethakota frontend ekedi customer ta "Oyaa aran thiyenne Cheese Burger " ekak kiyala pennanna puluwan wenawa.
     public OrderDetailDTO toOrderDetailDTO(OrderDetailEntity detailEntity) {
         OrderDetailDTO dto = modelMapper.map(detailEntity, OrderDetailDTO.class);
         
