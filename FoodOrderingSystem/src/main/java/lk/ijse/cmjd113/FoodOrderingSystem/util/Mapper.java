@@ -112,6 +112,19 @@ public class Mapper {
             dto.setOrderDetails(toOrderDetailDTOList(orderEntity.getOrderDetails()));
         }
 
+        dto.setRestaurantName(orderEntity.getRestaurantName());
+        dto.setDeliveryAddress(orderEntity.getDeliveryAddress());
+
+        if (orderEntity.getDriverName() != null) {
+            dto.setDriverName(orderEntity.getDriverName());
+        }
+        if (orderEntity.getDriverPhone() != null) {
+            dto.setDriverPhone(orderEntity.getDriverPhone());
+        }
+        if (orderEntity.getArrivalTime() != null) {
+            dto.setArrivalTime(orderEntity.getArrivalTime());
+        }
+
         return dto;
     }
 
