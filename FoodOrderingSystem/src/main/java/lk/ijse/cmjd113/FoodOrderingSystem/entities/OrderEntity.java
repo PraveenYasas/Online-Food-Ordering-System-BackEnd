@@ -37,6 +37,16 @@ public class OrderEntity {
 
     private String status;  // Order status (e.g., "Pending", "Completed", "Cancelled")
 
+    private String restaurantName;    // UI eke pennana
+
+    private String deliveryAddress;   // UI eke pennana
+
+    private String driverName;        // Driver innawanam
+
+    private String driverPhone;       // Driver ge No eka
+
+    private String arrivalTime;       // "15 min" wage pennana eka. (UI eke pennana)
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetailEntity> orderDetails;
 }
