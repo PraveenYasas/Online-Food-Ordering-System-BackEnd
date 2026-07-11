@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 import lk.ijse.cmjd113.FoodOrderingSystem.dao.FoodItemDAO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dao.OrderDAO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dao.OrderDetailDAO;
@@ -62,4 +62,33 @@ public class OrderServiceImpl implements OrderService {
         return mapper.toOrderDTO(savedOrder);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderDTO> getOrdersByUserId(Long userId) {
+        // 1. Database eken adala user ge details gannawa.
+        List<OrderEntity> orderEntities = orderDAO.findByUserId(userId);
+        
+        // 2. His DTo list ekak hadanawa
+        List<OrderDTO> dtoList = new ArrayList<>();
+        
+        // 3. ekin eka DTO ekakata harawala list ekata add karanawa
+        for (OrderEntity entity : orderEntities) {
+            dtoList.add(mapper.toOrderDTO(entity));
+        }
+        
+        return dtoList;
+    }
+
+    @Override
+    @Transactional
+    public OrderDTO updateOrderStatus(Long orderId, String status) {
+        // 1. Database eken adala order eka hoya gannawa.
+        OrderEntity orderEntity = orderDAO.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found!"));
+
+        orderEntity.setStatus(status); // 2. Status eka update karanawa
+
+        OrderEntity savedOrder = orderDAO.save(orderEntity); // 3. Database ekata save karanawa
+
+        return mapper.toOrderDTO(savedOrder); // 4. DTO ekata harawala return karanawa
+    }
 }

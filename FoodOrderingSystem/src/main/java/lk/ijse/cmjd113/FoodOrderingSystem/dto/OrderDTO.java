@@ -24,4 +24,14 @@ public class OrderDTO {
 
     // Bill ek athule thiyana kama jathi okkoma enne me List eka athule.
     private List<OrderDetailDTO> orderDetails;  // List of order details associated with the order
+
+    private String restaurantName;    // UI eke pennana
+
+    private String deliveryAddress;   // UI eke pennana
+
+    private String driverName;        // Driver innawanam
+
+    private String driverPhone;       // Driver ge No eka
+    
+    private String arrivalTime;       // "15 min" wage pennana eka. (UI eke pennana)
 }
