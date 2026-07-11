@@ -78,4 +78,17 @@ public class OrderServiceImpl implements OrderService {
         
         return dtoList;
     }
+
+    @Override
+    @Transactional
+    public OrderDTO updateOrderStatus(Long orderId, String status) {
+        // 1. Database eken adala order eka hoya gannawa.
+        OrderEntity orderEntity = orderDAO.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found!"));
+
+        orderEntity.setStatus(status); // 2. Status eka update karanawa
+
+        OrderEntity savedOrder = orderDAO.save(orderEntity); // 3. Database ekata save karanawa
+
+        return mapper.toOrderDTO(savedOrder); // 4. DTO ekata harawala return karanawa
+    }
 }

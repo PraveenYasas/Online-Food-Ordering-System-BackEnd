@@ -8,5 +8,7 @@ public interface OrderService {
     // Order ekak danakota DTO eka athule okkoma thiyanawa (User ID, Order Details, Total Amount, etc.)
     OrderDTO placeOrder(OrderDTO orderDTO);
 
+    OrderDTO updateOrderStatus(Long orderId, String status);
+
     List<OrderDTO> getOrdersByUserId(Long userId);
 }
