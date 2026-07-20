@@ -1,9 +1,12 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.entities;
 
-// Entity folder eka athule thiyenne database eke hadena tables walata adala java classes witharai.
-// User kiyanne databse table ekak misak sicurity code ekak nemei.
-
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,15 +23,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")  // database eke hadena table eke nama.
-@Data                   // Lombokwalink automatically getters, settes, toString hadala denawa.
-@NoArgsConstructor      // default constructor eka hadala denawa.
-@AllArgsConstructor     // Okoma fields thiyana constructor ekak hadala denawa.
-
-public class UserEntity {
+@Table(name = "users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserEntity implements UserDetails {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // id eka auto increment karanna.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -38,7 +40,7 @@ public class UserEntity {
     private String lastName;
 
     @Column(nullable = false, unique = true)
-    private String email;               // Email eka aniwaryai, duplicate email ekak database eke save karanna ba.
+    private String email;
 
     @Column(nullable = false)
     private String phone;
@@ -46,17 +48,51 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)        // Hadagaththa enum eka pawichchi karanawa
-    // meka damme nah nam data bse eke save wenne CUSTOMER wenuwata 0, ADMIN wenuwata 1, RESTAURANT_OWNER wenuwata 2 widihata. 
-    // Habai meka damme nisa database eke save wenne "CUSTOMER", "ADMIN", "RESTAURANT_OWNER" widihata.
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @PrePersist                         // mekne wenne database ekata data save wenna thathparekata kalin dan thiyana welawa ibema setwena eka thamai.
+    @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();  // User ekak hadaddi createdAt field eka automatic now() value ekak set karanna.
+        createdAt = LocalDateTime.now();
+    }
+
+    // =========================================================================
+    // Spring Security 'UserDetails' Methods
+    // =========================================================================
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Converting User's Role to can readable format for Spring Security
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        // ape system eke username eka widihata pawichchi karanne email eka. (Spring Security eke username kiyanne email eka)
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Account eka Expire wela na kiyanawa
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // Account eka Lock karala na
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Password eka Expire wela naha
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true; // Account eka active
     }
 }
