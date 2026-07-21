@@ -1,14 +1,9 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lk.ijse.cmjd113.FoodOrderingSystem.dto.LoginDTO;
-import lk.ijse.cmjd113.FoodOrderingSystem.dto.UserDTO;
-import lk.ijse.cmjd113.FoodOrderingSystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 // me controller class eka hariyata ape receptionist kenek wage.
@@ -29,25 +24,25 @@ public class UserController {
                                 // Habai @Autowired kiyala dammahama mukuth one naha spring eken ibema sambanda karala denawa. (Dependency Injection kiyanne mekata)
                                 // Ethakota controller ekata puluwan service ekata orders denna
 
-    private final UserService userService;    // Service ekata katha karanna eka methanata sambanda karagannawa.
+    // private final UserService userService;    // Service ekata katha karanna eka methanata sambanda karagannawa.
 
-    @PostMapping("/register")   // Frontend eken alth user kenek save karanna request ewwwahama eka enne mee register kiyana (API endpoint ekata).
-                                // meka dakka gaman yata thiyana method eka aharenawa.
+    // @PostMapping("/register")   // Frontend eken alth user kenek save karanna request ewwwahama eka enne mee register kiyana (API endpoint ekata).
+    //                             // meka dakka gaman yata thiyana method eka aharenawa.
 
-    public String registerUser(@RequestBody UserDTO userDTO) {  // Frontend eken ewanne JSON format eken.
-                                                                // Me @RequestBody eken karanne ee ena JSON data tika catch karagena lassanata api ara hadapu UserDTO eka athulata yawana ekai.
+    // public String registerUser(@RequestBody UserDTO userDTO) {  // Frontend eken ewanne JSON format eken.
+    //                                                             // Me @RequestBody eken karanne ee ena JSON data tika catch karagena lassanata api ara hadapu UserDTO eka athulata yawana ekai.
                                                                 
 
-        userService.saveUser(userDTO);          // Controller eka kelinma Database ekata atha danne naa.
-                                                // Eyaa karanne ara aapu DTO eka Service ekata pass karala kiyanawa "Menna meka save karala denna kiyala".
+    //     userService.saveUser(userDTO);          // Controller eka kelinma Database ekata atha danne naa.
+    //                                             // Eyaa karanne ara aapu DTO eka Service ekata pass karala kiyanawa "Menna meka save karala denna kiyala".
                                                 
-        return "User registered successfully";  // Wade iwara unagaman react ekata mesg ekak yawanawa.
-    }
+    //     return "User registered successfully";  // Wade iwara unagaman react ekata mesg ekak yawanawa.
+    // }
 
-    @PostMapping("/login")      // Kalin eka wagea thama.
-                                // React eken ewana Email ekai Password ekai allaganna methanadi pawichchi karanne LogiDTO eka.
+    // @PostMapping("/login")      // Kalin eka wagea thama.
+    //                             // React eken ewana Email ekai Password ekai allaganna methanadi pawichchi karanne LogiDTO eka.
 
-    public String loginUser(@RequestBody LoginDTO loginDTO) {
-        return userService.loginUser(loginDTO);    // Methanadi SaveUser ekewge neweii, kellinma Service eken enade React ekat return karanawa.
-    }
+    // public String loginUser(@RequestBody LoginDTO loginDTO) {
+    //     return userService.loginUser(loginDTO);    // Methanadi SaveUser ekewge neweii, kellinma Service eken enade React ekat return karanawa.
+    // }
 }

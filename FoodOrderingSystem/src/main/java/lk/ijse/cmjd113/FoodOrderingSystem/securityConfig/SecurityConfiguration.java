@@ -25,7 +25,7 @@ public class SecurityConfiguration {
         http
             .csrf(AbstractHttpConfigurer::disable) // Token පාවිච්චි කරන නිසා CSRF ඕනේ නෑ
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/**").permitAll() // Login සහ Register වලට හැමෝටම යන්න දෙනවා
+                .requestMatchers("/auth/**").permitAll() // Login සහ Register වලට හැමෝටම යන්න දෙනවා
                 .anyRequest().authenticated() // අනිත් හැම රික්වෙස්ට් එකකටම ලොග් වෙලා ඉන්න ඕනේ
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Session තියාගන්නේ නෑ (JWT වල හැටි)
