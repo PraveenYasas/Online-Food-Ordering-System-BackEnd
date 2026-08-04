@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 4. Aluth Token ekak hadala return karanawa (Frontend eken e token eka catch karaganna thama me class eka hadanne
         String jwtToken = jwtService.generateToken(user);
-        return new JwtAuthResponse(jwtToken);
+        return new JwtAuthResponse(jwtToken, user.getRole().name());
     }
 
     @Override
@@ -61,6 +61,6 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
         
         var jwtToken = jwtService.generateToken(user);
-        return new JwtAuthResponse(jwtToken);
+        return new JwtAuthResponse(jwtToken, user.getRole().name());
     }
 }
