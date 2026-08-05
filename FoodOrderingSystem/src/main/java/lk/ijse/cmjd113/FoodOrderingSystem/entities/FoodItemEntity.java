@@ -40,4 +40,7 @@ public class FoodItemEntity {
 
     private CategoryEntity category;    // meken thamai java code eka athule adala kama ekai category ekai link karanne.
                                         // me kaama ekama aithiwena mulu category object ekama me asse save karagena thiyaganna puluwan.
+
+    @Column(name = "image_url")
+    private String imageUrl; // meka thamai food item ekata adala image eka database ekata save karanna ona nam meka use karanne.
 }
