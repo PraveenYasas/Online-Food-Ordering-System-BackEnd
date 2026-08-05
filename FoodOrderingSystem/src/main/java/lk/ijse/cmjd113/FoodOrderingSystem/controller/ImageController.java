@@ -1,20 +1,20 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.controller;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.Paths; // අපේ අලුත් Util එක Import කරගන්නවා
 import java.nio.file.StandardCopyOption;
-import java.util.UUID;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import lk.ijse.cmjd113.FoodOrderingSystem.util.FileUtil;
 
 @RestController
 @RequestMapping("/images")
@@ -31,8 +31,8 @@ public class ImageController {
                 Files.createDirectories(uploadPath);
             }
 
-            String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
-            String newFileName = UUID.randomUUID().toString() + "_" + originalFileName;
+            // 🔥 Util class එක පාවිච්චි කරලා අලුත් නම හදාගන්නවා 🔥
+            String newFileName = FileUtil.generateUniqueFileName(file.getOriginalFilename());
 
             Path filePath = uploadPath.resolve(newFileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
