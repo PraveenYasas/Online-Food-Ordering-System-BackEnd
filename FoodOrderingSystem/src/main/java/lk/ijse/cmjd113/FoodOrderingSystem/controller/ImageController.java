@@ -3,7 +3,7 @@ package lk.ijse.cmjd113.FoodOrderingSystem.controller;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths; // අපේ අලුත් Util එක Import කරගන්නවා
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,6 @@ public class ImageController {
                 Files.createDirectories(uploadPath);
             }
 
-            // 🔥 Util class එක පාවිච්චි කරලා අලුත් නම හදාගන්නවා 🔥
             String newFileName = FileUtil.generateUniqueFileName(file.getOriginalFilename());
 
             Path filePath = uploadPath.resolve(newFileName);
