@@ -1,13 +1,13 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.securityConfig;
 
-import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -27,36 +27,35 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        
-        http.cors(Customizer.withDefaults()); // Enable CORS support in Spring Security
-        http.csrf(csrf -> csrf.disable());
-
-        http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/auth/**").permitAll(); 
-            // Allow all requests to the /auth/** endpoints (register and login) without authentication
-            auth.requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll(); 
-            auth.anyRequest().authenticated();            
-        });
-
-        http.sessionManagement(session -> {
-            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        });
-
-        http.authenticationProvider(authenticationProvider);
-        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 🔥 CORS ප්‍රශ්නෙ විසඳන්න මේක දැම්මා
+            .csrf(AbstractHttpConfigurer::disable) // Token පාවිච්චි කරන නිසා CSRF ඕනේ නෑ
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll() // Login සහ Register වලට හැමෝටම යන්න දෙනවා
+                
+                // 🔥 දැනට අපිට මේ ටික Test කරගන්න ඕන නිසා, මේ ලින්ක් වලටත් Token නැතුව යන්න දෙනවා.
+                // (පස්සේ අපි Frontend එකෙන් Token එක හරියට යවද්දී මේක අයින් කරමු)
+                .requestMatchers(   "/api/v1/categories/**", 
+                                                "/api/v1/food-items/**", 
+                                                "/api/v1/images/**")
+                                                .permitAll() 
+                
+                .anyRequest().authenticated() // අනිත් හැම රික්වෙස්ට් එකකටම ලොග් වෙලා ඉන්න ඕනේ
+            )
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Session තියාගන්නේ නෑ (JWT වල හැටි)
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // අපේ ෆිල්ටර් එක මුලින්ම දානවා
 
         return http.build();
     }
 
-    // In this method, we are configuring CORS to allow requests from the React frontend running on port 5173. 
-    // We specify the allowed origins, methods, and headers for cross-origin requests.
+    // 🔥 React එකෙන් එන කෝල්ස් අනුමත කරන අලුත් කෑල්ල (CORS Configuration)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Allow requests from the React frontend running on port 5173
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://127.0.0.1:5173"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedOrigins(List.of("*")); 
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
