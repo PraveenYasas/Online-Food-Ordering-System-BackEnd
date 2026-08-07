@@ -28,28 +28,26 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 🔥 CORS ප්‍රශ්නෙ විසඳන්න මේක දැම්මා
-            .csrf(AbstractHttpConfigurer::disable) // Token පාවිච්චි කරන නිසා CSRF ඕනේ නෑ
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll() // Login සහ Register වලට හැමෝටම යන්න දෙනවා
+                .requestMatchers("/auth/**").permitAll() 
                 
-                // 🔥 දැනට අපිට මේ ටික Test කරගන්න ඕන නිසා, මේ ලින්ක් වලටත් Token නැතුව යන්න දෙනවා.
-                // (පස්සේ අපි Frontend එකෙන් Token එක හරියට යවද්දී මේක අයින් කරමු)
-                .requestMatchers(   "/api/v1/categories/**", 
-                                                "/api/v1/food-items/**", 
-                                                "/api/v1/images/**")
-                                                .permitAll() 
+                .requestMatchers(   
+                    "/categories", "/categories/**", 
+                    "/food-items", "/food-items/**", 
+                    "/images", "/images/**"
+                ).permitAll() 
                 
-                .anyRequest().authenticated() // අනිත් හැම රික්වෙස්ට් එකකටම ලොග් වෙලා ඉන්න ඕනේ
+                .anyRequest().authenticated() 
             )
-            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Session තියාගන්නේ නෑ (JWT වල හැටි)
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // අපේ ෆිල්ටර් එක මුලින්ම දානවා
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // 🔥 React එකෙන් එන කෝල්ස් අනුමත කරන අලුත් කෑල්ල (CORS Configuration)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
