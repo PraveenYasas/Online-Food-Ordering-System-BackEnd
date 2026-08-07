@@ -30,11 +30,13 @@ public class OrderServiceImpl implements OrderService {
     private final FoodItemDAO foodItemDAO; // meken database ekata food item eka update karanna puluwan wenawa.
     private final Mapper mapper; // meken DTO eka Entity ekata harawanna puluwan wenawa.
 
-    @Override
+@Override
     public OrderDTO placeOrder(OrderDTO orderDTO) {
         // 1. Mulin OrderEntity eka hadanawa
         OrderEntity orderEntity = mapper.toOrderEntity(orderDTO);
         orderEntity.setOrderDate(LocalDateTime.now());
+
+        orderEntity.setOrderDetails(new ArrayList<>()); 
 
         // 2. Main Order eka save karanawa (ethakota apita ID eka labenawa)
         OrderEntity savedOrder = orderDAO.save(orderEntity);
