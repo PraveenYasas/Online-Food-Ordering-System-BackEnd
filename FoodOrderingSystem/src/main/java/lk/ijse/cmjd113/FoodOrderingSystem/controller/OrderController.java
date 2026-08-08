@@ -39,5 +39,10 @@ public class OrderController {
     public OrderDTO updateOrderStatus(@PathVariable Long orderId, @RequestParam String status) {
         return orderService.updateOrderStatus(orderId, status);
     }
+
+    @GetMapping("/all")
+    public List<OrderDTO> getAllOrders() {
+        return orderService.getAllOrders();
+    }
     
 }

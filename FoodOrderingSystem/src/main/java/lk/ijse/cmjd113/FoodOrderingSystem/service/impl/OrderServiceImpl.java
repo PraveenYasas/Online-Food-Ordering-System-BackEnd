@@ -93,4 +93,18 @@ public class OrderServiceImpl implements OrderService {
 
         return mapper.toOrderDTO(savedOrder); // 4. DTO ekata harawala return karanawa
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderDTO> getAllOrders() {
+        List<OrderEntity> orderEntities = orderDAO.findAll();
+        
+        List<OrderDTO> dtoList = new ArrayList<>();
+        
+        for (OrderEntity entity : orderEntities) {
+            dtoList.add(mapper.toOrderDTO(entity));
+        }
+        
+        return dtoList;
+    }
 }
