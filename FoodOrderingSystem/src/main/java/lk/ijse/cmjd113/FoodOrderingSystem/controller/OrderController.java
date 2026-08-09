@@ -1,6 +1,7 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +44,11 @@ public class OrderController {
     @GetMapping("/all")
     public List<OrderDTO> getAllOrders() {
         return orderService.getAllOrders();
+    }
+
+    @GetMapping("/stats/today")
+    public Map<String, Object> getTodayShopStats() {
+        return orderService.getTodayShopStats();
     }
     
 }

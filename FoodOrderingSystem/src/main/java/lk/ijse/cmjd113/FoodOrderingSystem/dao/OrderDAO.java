@@ -1,5 +1,6 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ public interface OrderDAO extends JpaRepository<OrderEntity, Long> {
     // User kenek daapu order4s okkoma hoyagana meka pawichchi karanna puluwan.
     // Ex: User ge "My Orders" page ekata data yawaddi meka patta watinawa.
     List<OrderEntity> findByUserId(Long userId);
+
+    List<OrderEntity> findByOrderDateBetween(LocalDateTime start, LocalDateTime end);
 }

@@ -1,8 +1,11 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.service.impl;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +33,8 @@ public class OrderServiceImpl implements OrderService {
     private final FoodItemDAO foodItemDAO; // meken database ekata food item eka update karanna puluwan wenawa.
     private final Mapper mapper; // meken DTO eka Entity ekata harawanna puluwan wenawa.
 
-@Override
+    @Override
+    @Transactional
     public OrderDTO placeOrder(OrderDTO orderDTO) {
         // 1. Mulin OrderEntity eka hadanawa
         OrderEntity orderEntity = mapper.toOrderEntity(orderDTO);
@@ -115,5 +119,29 @@ public class OrderServiceImpl implements OrderService {
         }
         
         return dtoList;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, Object> getTodayShopStats() {
+        LocalDateTime startOfDay = LocalDateTime.now().with(LocalTime.MIN);
+        LocalDateTime endOfDay = LocalDateTime.now().with(LocalTime.MAX);
+        
+        List<OrderEntity> todaysOrders = orderDAO.findByOrderDateBetween(startOfDay, endOfDay);
+        
+        long count = todaysOrders.size();
+        double revenue = 0.0;
+        
+        for (OrderEntity order : todaysOrders) {
+            if (!"Cancelled".equals(order.getStatus())) {
+                revenue += order.getTotalAmount();
+            }
+        }
+        
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("ordersToday", count);
+        stats.put("revenueToday", revenue);
+        
+        return stats;
     }
 }
