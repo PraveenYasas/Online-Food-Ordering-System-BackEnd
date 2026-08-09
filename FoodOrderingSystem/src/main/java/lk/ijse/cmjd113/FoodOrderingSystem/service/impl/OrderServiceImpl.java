@@ -38,23 +38,32 @@ public class OrderServiceImpl implements OrderService {
 
         orderEntity.setOrderDetails(new ArrayList<>()); 
 
-        // 2. Main Order eka save karanawa (ethakota apita ID eka labenawa)
+        if (orderDTO.getOrderDetails() != null && !orderDTO.getOrderDetails().isEmpty()) {
+            Long firstFoodId = orderDTO.getOrderDetails().get(0).getFoodItemId();
+            FoodItemEntity firstFood = foodItemDAO.findById(firstFoodId)
+                    .orElseThrow(() -> new RuntimeException("Food Item not found!"));
+            
+            orderEntity.setRestaurant(firstFood.getRestaurant());
+        } else {
+            throw new RuntimeException("Order must have at least one item!");
+        }
+
+        // 2. Main Order eka save karanawa 
         OrderEntity savedOrder = orderDAO.save(orderEntity);
 
-        // 3. OrderDetails tika save karanawa (ethakota apita OrderDetailEntity list ekak labenawa)
+        // 3. OrderDetails tika save karanawa
         List<OrderDetailEntity> detailEntities = new ArrayList<>();
         
         for (OrderDetailDTO detailDTO : orderDTO.getOrderDetails()) {
             OrderDetailEntity detailEntity = new OrderDetailEntity();
             
-            // Food Item eka Database eke hoyagannawa.
             FoodItemEntity foodItem = foodItemDAO.findById(detailDTO.getFoodItemId())
                     .orElseThrow(() -> new RuntimeException("Food Item not found!"));
 
-            detailEntity.setOrder(savedOrder); // meka aithi order ekata link karanawa
+            detailEntity.setOrder(savedOrder); 
             detailEntity.setFoodItem(foodItem);
             detailEntity.setQuantity(detailDTO.getQuantity());
-            detailEntity.setPrice(foodItem.getPrice()); // ee welawe thibba price eka set karanawa
+            detailEntity.setPrice(foodItem.getPrice()); 
             
             detailEntities.add(orderDetailDAO.save(detailEntity));
         }

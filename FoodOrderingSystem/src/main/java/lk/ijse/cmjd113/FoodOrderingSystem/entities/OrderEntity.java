@@ -38,8 +38,6 @@ public class OrderEntity {
 
     private String status;  // Order status (e.g., "Pending", "Completed", "Cancelled")
 
-    private String restaurantName;    // UI eke pennana
-
     private String deliveryAddress;   // UI eke pennana
 
     private String driverName;        // Driver innawanam
