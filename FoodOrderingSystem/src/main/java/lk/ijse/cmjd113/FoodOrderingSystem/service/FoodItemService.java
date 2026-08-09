@@ -13,4 +13,6 @@ public interface FoodItemService {
 
     // "Burgers" wage eka categorry ekakata adala kama filter karala ganna.
     List<FoodItemDTO> getFoodItemsByCategory(Long categoryId);
+
+    List<FoodItemDTO> getFoodItemsByRestaurant(Long restaurantId);
 }

@@ -13,4 +13,6 @@ public interface FoodItemDAO extends JpaRepository<FoodItemEntity, Long> { // me
 
     // Issarahata apita "Burgers" Category walata adala kama witharak filter karala ganna ona unahama meka watinawa.
     List<FoodItemEntity> findByCategoryId(Long categoryId);
+
+    List<FoodItemEntity> findByRestaurantId(Long restaurantId);
 }

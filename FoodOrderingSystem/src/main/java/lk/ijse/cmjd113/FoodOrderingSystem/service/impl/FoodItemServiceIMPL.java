@@ -83,4 +83,10 @@ public class FoodItemServiceIMPL implements FoodItemService {
 
         return mapper.toFoodItemDTOList(foodItemEntities);
     }
+
+    @Override
+    public List<FoodItemDTO> getFoodItemsByRestaurant(Long restaurantId) {
+        List<FoodItemEntity> entities = foodItemDAO.findByRestaurantId(restaurantId);
+        return mapper.toFoodItemDTOList(entities);
+    }
 }
