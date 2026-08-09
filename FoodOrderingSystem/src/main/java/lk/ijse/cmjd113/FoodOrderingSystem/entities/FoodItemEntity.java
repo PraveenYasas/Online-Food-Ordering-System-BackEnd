@@ -2,6 +2,7 @@ package lk.ijse.cmjd113.FoodOrderingSystem.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,4 +44,9 @@ public class FoodItemEntity {
 
     @Column(name = "image_url")
     private String imageUrl; // meka thamai food item ekata adala image eka database ekata save karanna ona nam meka use karanne.
+
+    // hama kaamakma mokak hari kadayakata aithi wenna ona nisa meka use karanne. mekath meka database ekata save karanna ona nam meka use karanne.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private RestaurantEntity restaurant;
 }
