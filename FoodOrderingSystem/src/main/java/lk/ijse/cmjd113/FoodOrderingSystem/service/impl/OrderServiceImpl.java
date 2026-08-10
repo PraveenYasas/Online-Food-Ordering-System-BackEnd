@@ -131,15 +131,34 @@ public class OrderServiceImpl implements OrderService {
         long count = todaysOrders.size();
         double revenue = 0.0;
         
+        Map<String, Integer> itemCounts = new HashMap<>();
+        
         for (OrderEntity order : todaysOrders) {
             if (!"Cancelled".equals(order.getStatus())) {
                 revenue += order.getTotalAmount();
+                
+                if (order.getOrderDetails() != null) {
+                    for (OrderDetailEntity detail : order.getOrderDetails()) {
+                        String foodName = detail.getFoodItem().getName();
+                        itemCounts.put(foodName, itemCounts.getOrDefault(foodName, 0) + detail.getQuantity());
+                    }
+                }
+            }
+        }
+        
+        String topItem = "No sales yet";
+        int maxQty = 0;
+        for (Map.Entry<String, Integer> entry : itemCounts.entrySet()) {
+            if (entry.getValue() > maxQty) {
+                maxQty = entry.getValue();
+                topItem = entry.getKey();
             }
         }
         
         Map<String, Object> stats = new HashMap<>();
         stats.put("ordersToday", count);
         stats.put("revenueToday", revenue);
+        stats.put("topSellingItem", topItem);
         
         return stats;
     }
