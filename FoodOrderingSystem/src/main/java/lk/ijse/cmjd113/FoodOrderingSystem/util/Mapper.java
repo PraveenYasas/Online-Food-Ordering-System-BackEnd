@@ -102,7 +102,7 @@ public class Mapper {
     public OrderDTO toOrderDTO(OrderEntity orderEntity) {
         OrderDTO dto = modelMapper.map(orderEntity, OrderDTO.class);
 
-        // User ge ID eka witharak set karanawa. (Me wage wenama mapping ekak thiyenawanam meka Service eke liwwoth code eka katha wenawa.)
+        // User ge ID eka witharak set karanawa.
         if (orderEntity.getUser() != null) {
             dto.setUserId(orderEntity.getUser().getId());
         }
@@ -112,7 +112,10 @@ public class Mapper {
             dto.setOrderDetails(toOrderDetailDTOList(orderEntity.getOrderDetails()));
         }
 
-        dto.setRestaurantName(orderEntity.getRestaurantName());
+        if (orderEntity.getRestaurant() != null) {
+            dto.setRestaurantName(orderEntity.getRestaurant().getName());
+        }
+
         dto.setDeliveryAddress(orderEntity.getDeliveryAddress());
 
         if (orderEntity.getDriverName() != null) {

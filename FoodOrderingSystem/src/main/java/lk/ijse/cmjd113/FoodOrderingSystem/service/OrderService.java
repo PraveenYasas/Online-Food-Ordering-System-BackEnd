@@ -1,6 +1,7 @@
 package lk.ijse.cmjd113.FoodOrderingSystem.service;
 
 import java.util.List;
+import java.util.Map;
 
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.OrderDTO;
 
@@ -13,4 +14,6 @@ public interface OrderService {
     List<OrderDTO> getOrdersByUserId(Long userId);
 
     List<OrderDTO> getAllOrders();
+
+    Map<String, Object> getTodayShopStats();
 }

@@ -38,4 +38,9 @@ public class FoodItemController {
         // me @PathVariable eken karanne URL eken ena ankya (ID eka) allaganna ekai.
         return foodItemService.getFoodItemsByCategory(categoryId);
     }
+
+    @GetMapping("/restaurant/{restaurantId}")
+    public List<FoodItemDTO> getFoodItemsByRestaurant(@PathVariable Long restaurantId) {
+        return foodItemService.getFoodItemsByRestaurant(restaurantId);
+    }
 }
