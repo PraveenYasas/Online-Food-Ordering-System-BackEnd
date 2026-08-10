@@ -11,7 +11,9 @@ import lk.ijse.cmjd113.FoodOrderingSystem.dao.FoodItemDAO;
 import lk.ijse.cmjd113.FoodOrderingSystem.dto.FoodItemDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.CategoryEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.FoodItemEntity;
+import lk.ijse.cmjd113.FoodOrderingSystem.entities.RestaurantEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.service.FoodItemService;
+import lk.ijse.cmjd113.FoodOrderingSystem.service.RestaurantService;
 import lk.ijse.cmjd113.FoodOrderingSystem.util.Mapper;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +24,7 @@ public class FoodItemServiceIMPL implements FoodItemService {
 
     private final FoodItemDAO foodItemDAO;
     private final CategoryDAO categoryDAO; 
+    private final RestaurantService restaurantService;
     private final Mapper mapper; 
 
     @Override
@@ -37,14 +40,12 @@ public class FoodItemServiceIMPL implements FoodItemService {
 
         // Category eka thiyanawa nam eka Optional eka thulen eliyata annawa
         CategoryEntity category = categoryOptional.get();
-
-        // DTO eka Entity ekakata convert karanawa
-        FoodItemEntity foodItemEntity = mapper.toFoodItemEntity(foodItemDTO);   // ape mapper eken entity ekata harawanawa.
-        
-        // Ara hoyagaththa Category eka me kaama ekata set karanawa.
+        FoodItemEntity foodItemEntity = mapper.toFoodItemEntity(foodItemDTO);
         foodItemEntity.setCategory(category);
+        
+        RestaurantEntity myShop = restaurantService.getCurrentUserRestaurant();
+        foodItemEntity.setRestaurant(myShop);
 
-        // Database ekata save karanawa.
         FoodItemEntity savedFoodItem = foodItemDAO.save(foodItemEntity);
 
         // Save wechcha eka aayeth DTO ekakata harawala return karanawa.
@@ -85,8 +86,17 @@ public class FoodItemServiceIMPL implements FoodItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FoodItemDTO> getFoodItemsByRestaurant(Long restaurantId) {
         List<FoodItemEntity> entities = foodItemDAO.findByRestaurantId(restaurantId);
+        return mapper.toFoodItemDTOList(entities);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<FoodItemDTO> getMyFoodItems() {
+        RestaurantEntity myShop = restaurantService.getCurrentUserRestaurant();
+        List<FoodItemEntity> entities = foodItemDAO.findByRestaurantId(myShop.getId());
         return mapper.toFoodItemDTOList(entities);
     }
 }

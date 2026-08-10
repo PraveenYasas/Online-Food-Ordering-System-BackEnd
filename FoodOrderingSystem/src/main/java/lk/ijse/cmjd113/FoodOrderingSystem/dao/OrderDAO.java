@@ -15,4 +15,8 @@ public interface OrderDAO extends JpaRepository<OrderEntity, Long> {
     List<OrderEntity> findByUserId(Long userId);
 
     List<OrderEntity> findByOrderDateBetween(LocalDateTime start, LocalDateTime end);
+
+    List<OrderEntity> findByRestaurantId(Long restaurantId);
+    
+    List<OrderEntity> findByRestaurantIdAndOrderDateBetween(Long restaurantId, LocalDateTime start, LocalDateTime end);
 }

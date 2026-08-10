@@ -18,7 +18,9 @@ import lk.ijse.cmjd113.FoodOrderingSystem.dto.OrderDetailDTO;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.FoodItemEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.OrderDetailEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.entities.OrderEntity;
+import lk.ijse.cmjd113.FoodOrderingSystem.entities.RestaurantEntity;
 import lk.ijse.cmjd113.FoodOrderingSystem.service.OrderService;
+import lk.ijse.cmjd113.FoodOrderingSystem.service.RestaurantService;
 import lk.ijse.cmjd113.FoodOrderingSystem.util.Mapper;
 import lombok.RequiredArgsConstructor;
 
@@ -26,12 +28,12 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    // me class eka athule thiyenne placeOrder() method eka implement karana eka.
     
-    private final OrderDAO orderDAO; // meken database ekata order eka save karanna puluwan wenawa.
-    private final OrderDetailDAO orderDetailDAO; // meken database ekata order details save karanna puluwan wenawa.
-    private final FoodItemDAO foodItemDAO; // meken database ekata food item eka update karanna puluwan wenawa.
-    private final Mapper mapper; // meken DTO eka Entity ekata harawanna puluwan wenawa.
+    private final OrderDAO orderDAO; 
+    private final OrderDetailDAO orderDetailDAO; 
+    private final FoodItemDAO foodItemDAO; 
+    private final RestaurantService restaurantService;
+    private final Mapper mapper; 
 
     @Override
     @Transactional
@@ -39,7 +41,6 @@ public class OrderServiceImpl implements OrderService {
         // 1. Mulin OrderEntity eka hadanawa
         OrderEntity orderEntity = mapper.toOrderEntity(orderDTO);
         orderEntity.setOrderDate(LocalDateTime.now());
-
         orderEntity.setOrderDetails(new ArrayList<>()); 
 
         if (orderDTO.getOrderDetails() != null && !orderDTO.getOrderDetails().isEmpty()) {
@@ -99,35 +100,33 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO updateOrderStatus(Long orderId, String status) {
         // 1. Database eken adala order eka hoya gannawa.
         OrderEntity orderEntity = orderDAO.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found!"));
-
-        orderEntity.setStatus(status); // 2. Status eka update karanawa
-
-        OrderEntity savedOrder = orderDAO.save(orderEntity); // 3. Database ekata save karanawa
-
-        return mapper.toOrderDTO(savedOrder); // 4. DTO ekata harawala return karanawa
+        orderEntity.setStatus(status); 
+        OrderEntity savedOrder = orderDAO.save(orderEntity); 
+        return mapper.toOrderDTO(savedOrder); 
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<OrderDTO> getAllOrders() {
-        List<OrderEntity> orderEntities = orderDAO.findAll();
+        RestaurantEntity myShop = restaurantService.getCurrentUserRestaurant();
+        List<OrderEntity> orderEntities = orderDAO.findByRestaurantId(myShop.getId());
         
         List<OrderDTO> dtoList = new ArrayList<>();
-        
         for (OrderEntity entity : orderEntities) {
             dtoList.add(mapper.toOrderDTO(entity));
         }
-        
         return dtoList;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Map<String, Object> getTodayShopStats() {
+        RestaurantEntity myShop = restaurantService.getCurrentUserRestaurant();
+        
         LocalDateTime startOfDay = LocalDateTime.now().with(LocalTime.MIN);
         LocalDateTime endOfDay = LocalDateTime.now().with(LocalTime.MAX);
         
-        List<OrderEntity> todaysOrders = orderDAO.findByOrderDateBetween(startOfDay, endOfDay);
+        List<OrderEntity> todaysOrders = orderDAO.findByRestaurantIdAndOrderDateBetween(myShop.getId(), startOfDay, endOfDay);
         
         long count = todaysOrders.size();
         double revenue = 0.0;
