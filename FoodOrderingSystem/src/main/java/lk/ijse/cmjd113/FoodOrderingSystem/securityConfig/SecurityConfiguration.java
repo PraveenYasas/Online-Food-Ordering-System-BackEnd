@@ -32,17 +32,16 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() 
-                
                 .requestMatchers("/auth/**").permitAll() 
-                
                 .requestMatchers(   
                     "/categories", "/categories/**", 
                     "/food-items", "/food-items/**", 
-                    "/images", "/images/**"
+                    "/images", "/images/**",
+                    "/api/v1/files/**" 
                 ).permitAll() 
-                
                 .anyRequest().authenticated() 
             )
+            
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
