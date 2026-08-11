@@ -7,5 +7,5 @@ import lk.ijse.cmjd113.FoodOrderingSystem.entities.RestaurantEntity;
 public interface RestaurantService {
     RestaurantEntity getCurrentUserRestaurant();
     
-    RestaurantEntity createRestaurant(String name, String address, String contactNumber, MultipartFile image);
+    RestaurantEntity createRestaurant(String name, String address, String contactNumber, String ownerEmail, MultipartFile image);
 }

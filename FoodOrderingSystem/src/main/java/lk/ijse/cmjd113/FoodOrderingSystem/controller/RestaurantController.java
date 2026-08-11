@@ -36,9 +36,10 @@ public class RestaurantController {
         @RequestParam("name") String name,
         @RequestParam("address") String address,
         @RequestParam("contactNumber") String contactNumber,
+        @RequestParam("ownerEmail") String ownerEmail,
         @RequestParam(value = "image", required = false) MultipartFile image
     ) {
-        RestaurantEntity savedRestaurant = restaurantService.createRestaurant(name, address, contactNumber, image);
+        RestaurantEntity savedRestaurant = restaurantService.createRestaurant(name, address, contactNumber, ownerEmail, image);
         return ResponseEntity.ok(savedRestaurant);
     }
 }
