@@ -26,25 +26,32 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtAuthResponse register(RegisterDTO request) {
-        // 1. Check the Email allready exists in the database or not. If exists, throw an exception
+        // 1. Check the Email already exists in the database or not. If exists, throw an exception
         if (userDAO.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email is already registered!");
         }
 
-        // 2. Create new User and save it to the database (password eka encrypt karala save karanawa)
+        // 2. Create new User and save it to the database
         UserEntity user = new UserEntity();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
         
-        // 3. Password eka Encrypt karala (#) save karanawa (methana thama security eka handle karanne)
+        // 3. Password eka Encrypt karala (#) save karanawa
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.CUSTOMER); // Frontend eken ena hamoma default Customer widihata save wenne.
+        
+        System.out.println("👉 Frontend එකෙන් ආපු Role එක: " + request.getRole());
+        
+        if (request.getRole() != null && request.getRole().trim().equalsIgnoreCase("RESTURANT_OWNER")) {
+            user.setRole(Role.RESTURANT_OWNER); 
+        } else {
+            user.setRole(Role.CUSTOMER);
+        }
 
         userDAO.save(user);
 
-        // 4. Aluth Token ekak hadala return karanawa (Frontend eken e token eka catch karaganna thama me class eka hadanne
+        // 5. Aluth Token ekak hadala return karanawa
         String jwtToken = jwtService.generateToken(user);
         return new JwtAuthResponse(jwtToken, user.getRole().name());
     }
