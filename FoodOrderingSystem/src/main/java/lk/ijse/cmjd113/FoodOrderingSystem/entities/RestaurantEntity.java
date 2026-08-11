@@ -2,6 +2,8 @@ package lk.ijse.cmjd113.FoodOrderingSystem.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,11 +33,15 @@ public class RestaurantEntity {
     private String address;
     
     private String contactNumber;
+    
+    private String imageUrl;
 
+    @JsonIgnore 
     @OneToOne
     @JoinColumn(name = "owner_id")
     private UserEntity owner;
 
+    @JsonIgnore 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<FoodItemEntity> foodItems;
 }
