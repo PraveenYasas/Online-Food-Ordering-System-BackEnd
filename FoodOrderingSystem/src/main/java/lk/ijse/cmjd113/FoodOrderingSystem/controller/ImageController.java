@@ -29,7 +29,6 @@ public class ImageController {
 
     private final String UPLOAD_DIR = "uploads/";
 
-    // 🔥 1. ඔයාගේ පරණ Upload මෙතඩ් එක (මේක කිසිම වෙනසක් කරලා නෑ)
     @PostMapping("/upload")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
@@ -51,56 +50,30 @@ public class ImageController {
         }
     }
 
-    // 🔥 2. පින්තූර බ්‍රවුසරේ පෙන්නන සුපිරි GET මෙතඩ් එක (හැම තැනම හොයනවා)
     @GetMapping("/{fileName:.+}")
     public ResponseEntity<Resource> serveImage(@PathVariable String fileName) {
         try {
-            // Working Directory එක මොකක්ද කියලා Console එකේ ප්‍රින්ට් කරනවා
-            String userDir = System.getProperty("user.dir");
-            System.out.println("========== IMAGE SEARCH ==========");
-            System.out.println("Working Directory: " + userDir);
-            System.out.println("Looking for File: " + fileName);
-
-            // ෆයිල් එක තියෙන්න පුළුවන් හැම තැනම ලිස්ට් එකක්
-            String[] possibleBases = {
-                "uploads",
-                "FoodOrderingSystem/uploads",
-                userDir + "/uploads",
-                userDir + "/FoodOrderingSystem/uploads"
-            };
-
-            Path filePath = null;
-
-            // එකින් එක හොයලා බලනවා
-            for (String base : possibleBases) {
-                Path testPath = Paths.get(base).resolve(fileName).normalize();
-                System.out.println("Trying path: " + testPath.toAbsolutePath());
-                
-                if (Files.exists(testPath)) {
-                    filePath = testPath;
-                    System.out.println("✅ MATCH FOUND AT: " + filePath.toAbsolutePath());
-                    break;
-                }
+            Path filePath = Paths.get("uploads").resolve(fileName).normalize();
+            
+            if (!Files.exists(filePath)) {
+                filePath = Paths.get("FoodOrderingSystem/uploads").resolve(fileName).normalize();
             }
 
-            if (filePath != null) {
-                Resource resource = new UrlResource(filePath.toUri());
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
                 String contentType = Files.probeContentType(filePath);
                 if (contentType == null) {
                     contentType = "image/jpeg";
                 }
-                System.out.println("==================================");
                 return ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType(contentType))
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                         .body(resource);
             } else {
-                System.out.println("❌ FILE NOT FOUND ANYWHERE!");
-                System.out.println("==================================");
                 return ResponseEntity.notFound().build();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             return ResponseEntity.internalServerError().build();
         }
     }
