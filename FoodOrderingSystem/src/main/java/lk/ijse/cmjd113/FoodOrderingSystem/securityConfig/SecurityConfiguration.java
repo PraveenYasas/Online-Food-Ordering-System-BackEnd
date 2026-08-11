@@ -39,7 +39,8 @@ public class SecurityConfiguration {
                     "/images", "/images/**",
                     "/api/v1/files/**",
                     "/favorites/**",
-                    "/restaurants/**"
+                    "/restaurants/**",
+                    "/api/v1/users/**"
                 ).permitAll() 
                 .anyRequest().authenticated() 
             )

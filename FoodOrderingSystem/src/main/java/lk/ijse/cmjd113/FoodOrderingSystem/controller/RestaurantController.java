@@ -6,7 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,5 +43,17 @@ public class RestaurantController {
     ) {
         RestaurantEntity savedRestaurant = restaurantService.createRestaurant(name, address, contactNumber, ownerEmail, image);
         return ResponseEntity.ok(savedRestaurant);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<RestaurantEntity> updateRestaurant(
+        @PathVariable Long id,
+        @RequestParam("name") String name,
+        @RequestParam("address") String address,
+        @RequestParam("contactNumber") String contactNumber,
+        @RequestParam(value = "image", required = false) MultipartFile image
+    ) {
+        RestaurantEntity updatedRestaurant = restaurantService.updateRestaurant(id, name, address, contactNumber, image);
+        return ResponseEntity.ok(updatedRestaurant);
     }
 }

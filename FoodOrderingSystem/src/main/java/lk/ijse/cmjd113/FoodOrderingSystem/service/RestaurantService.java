@@ -8,4 +8,6 @@ public interface RestaurantService {
     RestaurantEntity getCurrentUserRestaurant();
     
     RestaurantEntity createRestaurant(String name, String address, String contactNumber, String ownerEmail, MultipartFile image);
+
+    RestaurantEntity updateRestaurant(Long id, String name, String address, String contactNumber, MultipartFile image);
 }
