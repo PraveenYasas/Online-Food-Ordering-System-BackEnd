@@ -61,7 +61,7 @@ public class RestaurantServiceImpl implements RestaurantService {
                 Path filePath = Paths.get(uploadDir, fileName);
                 Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
                 
-                restaurant.setImageUrl("/images/" + fileName);
+                restaurant.setImageUrl("/" + fileName);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to store image file", e);
             }
