@@ -61,7 +61,36 @@ public class RestaurantServiceImpl implements RestaurantService {
                 Path filePath = Paths.get(uploadDir, fileName);
                 Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
                 
-                restaurant.setImageUrl("/" + fileName);
+                restaurant.setImageUrl("/images/" + fileName);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to store image file", e);
+            }
+        }
+        return restaurantDAO.save(restaurant);
+    }
+
+    @Override
+    @Transactional
+    public RestaurantEntity updateRestaurant(Long id, String name, String address, String contactNumber, MultipartFile image) {
+        RestaurantEntity restaurant = restaurantDAO.findById(id)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + id));
+        
+        restaurant.setName(name);
+        restaurant.setAddress(address);
+        restaurant.setContactNumber(contactNumber);
+
+        if (image != null && !image.isEmpty()) {
+            try {
+                String uploadDir = "uploads/"; 
+                File directory = new File(uploadDir);
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+                String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+                Path filePath = Paths.get(uploadDir, fileName);
+                Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                
+                restaurant.setImageUrl("/images/" + fileName);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to store image file", e);
             }
