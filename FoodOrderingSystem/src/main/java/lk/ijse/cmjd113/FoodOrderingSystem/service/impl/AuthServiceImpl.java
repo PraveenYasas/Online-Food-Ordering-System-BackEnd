@@ -53,7 +53,15 @@ public class AuthServiceImpl implements AuthService {
 
         // 5. Aluth Token ekak hadala return karanawa
         String jwtToken = jwtService.generateToken(user);
-        return new JwtAuthResponse(jwtToken, user.getRole().name());
+        
+        return new JwtAuthResponse(
+            jwtToken, 
+            user.getRole().name(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getPhone()
+        );
     }
 
     @Override
@@ -63,11 +71,19 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        // 2. Ok nam, User wa Database eken aran eyata Token ekak hadala return karanawa (Frontend eken e token eka catch karaganna thama me class eka hadanne)
+        // 2. Ok nam, User wa Database eken aran eyata Token ekak hadala return karanawa
         var user = userDAO.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
         
         var jwtToken = jwtService.generateToken(user);
-        return new JwtAuthResponse(jwtToken, user.getRole().name());
+        
+        return new JwtAuthResponse(
+            jwtToken, 
+            user.getRole().name(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getPhone()
+        );
     }
 }
