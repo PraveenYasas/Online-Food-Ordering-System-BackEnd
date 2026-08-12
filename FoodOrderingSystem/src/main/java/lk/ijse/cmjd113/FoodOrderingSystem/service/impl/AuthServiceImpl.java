@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
         // 3. Password eka Encrypt karala (#) save karanawa
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         
-        System.out.println("👉 Frontend එකෙන් ආපු Role එක: " + request.getRole());
+        System.out.println("The role coming from frontend: " + request.getRole());
         
         if (request.getRole() != null && request.getRole().trim().equalsIgnoreCase("RESTURANT_OWNER")) {
             user.setRole(Role.RESTURANT_OWNER); 
@@ -57,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
         return new JwtAuthResponse(
             jwtToken, 
             user.getRole().name(),
+            user.getId(), 
             user.getFirstName(),
             user.getLastName(),
             user.getEmail(),
@@ -80,6 +81,7 @@ public class AuthServiceImpl implements AuthService {
         return new JwtAuthResponse(
             jwtToken, 
             user.getRole().name(),
+            user.getId(),
             user.getFirstName(),
             user.getLastName(),
             user.getEmail(),
