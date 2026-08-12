@@ -20,6 +20,8 @@ public class FoodItemDTO {
     private Long categoryId;    // meka category id eka thiyaganna ona, 
                                 // nathnam api food item ekak save karanna yaddi category ekak select karanna ba. 
                                 // meka category ekakata adala id eka thiyaganna ona.
+                                
+    private Long restaurantId; 
     
     private String imageUrl; // meka thamai food item ekata adala image eka database ekata save karanna ona nam meka use karanne.
 }
