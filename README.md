@@ -35,3 +35,24 @@ Before running the application, you need to create a blank MySQL database.
 1. Open your MySQL client or terminal and run:
    ```sql
    CREATE DATABASE food_ordering_db;
+
+### 2️⃣ Clone, Setup Database, and Run
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/PraveenYasas/Online-Food-Ordering-System-BackEnd.git](https://github.com/PraveenYasas/Online-Food-Ordering-System-BackEnd.git)
+   cd Online-Food-Ordering-System-BackEnd
+
+### 3️⃣ Demo / Test Accounts 🔑
+
+To make it easy for examiners or developers to test the application, you can use the following pre-configured test accounts. *(Note: Make sure to import the provided SQL dump file into your MySQL database to use these exact accounts).*
+
+| User Role | Email Address | Password |
+| :--- | :--- | :--- |
+| **Admin** | `admin@bitedash.com` | `12345678` |
+| **Restaurant Owner (C Foods)** | `owner@cfoods.com` | `12345678` |
+| **Restaurant Owner (Kottu Labs)** | `owner@kottulabs.com` | `12345678` |
+| **Customer** | `praveen@gmail.com` | `12345678` |
+| **Customer** | `sakith71@gmail.com` | `12345678` |
+
+Simply enter these credentials on the Login Modal in the frontend, and the system will automatically redirect you to the appropriate dashboard based on the user's role!
